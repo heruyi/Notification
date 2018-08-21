@@ -11,7 +11,7 @@ import Foundation
 ///模仿KVOController
 internal typealias NotificationCallBackBlock = (EventInfo)->Void
 
-class HNotificationCenter: NSObject {
+class HNotificationCenter {
     
     var observers:[NSNotification.Name : Observer] = Dictionary()
     
@@ -53,7 +53,7 @@ class HNotificationCenter: NSObject {
 }
 
 // MARK 保存事件信息
-class EventInfo: NSObject {
+class EventInfo {
     
     let userInfo:[AnyHashable : Any]?
     let eventName:NSNotification.Name
@@ -70,7 +70,7 @@ class EventInfo: NSObject {
 }
 
 // MARK 实际订阅类
- class Observer: NSObject {
+ class Observer {
     
     let eventName : NSNotification.Name
     let block:NotificationCallBackBlock
@@ -86,7 +86,7 @@ class EventInfo: NSObject {
         return obs
     }
     
-    func notificationCallBack(_ nt:Notification) {
+    @objc func notificationCallBack(_ nt:Notification) {
         let event = EventInfo(eventName:nt.name ,observer:nt.object,userInfo:nt.userInfo)
         block(event)
     }
@@ -101,7 +101,7 @@ private var HNotificationKey = "HNotificationKey"
 
 extension NSObject{
     var notification:HNotificationCenter{
-        get{
+        get {
             var obj = objc_getAssociatedObject(self,&HNotificationKey)
             if (obj != nil) {
                 return obj as! HNotificationCenter
